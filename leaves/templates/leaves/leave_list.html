@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Leave Requests</h1>
+<p><a href="{% url 'leaves:create' %}">+ New Request</a></p>
+<ul>
+  {% for leave in leaves %}
+    <li>
+      <a href="{% url 'leaves:detail' leave.pk %}">
+        {{ leave.reason|truncatewords:8 }} ({{ leave.status }})
+      </a>
+      <small>by {{ leave.employee.username }}</small>
+    </li>
+  {% empty %}
+    <li>No requests found.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

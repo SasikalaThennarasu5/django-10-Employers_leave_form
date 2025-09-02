@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Leave Request</h1>
+<p><b>Employee:</b> {{ object.employee.username }}</p>
+<p><b>Reason:</b> {{ object.reason }}</p>
+<p><b>Status:</b> {{ object.status }}</p>
+
+{% if user == object.employee and object.status == "pending" %}
+  <a href="{% url 'leaves:edit' object.pk %}">Edit</a> ·
+  <a href="{% url 'leaves:delete' object.pk %}">Delete</a>
+{% endif %}
+
+{% if user.is_staff or user.is_superuser %}
+  <form method="post" action="{% url 'leaves:approve_reject' object.pk %}">
+    {% csrf_token %}
+    <button name="action" value="approved">Approve</button>
+    <button name="action" value="rejected">Reject</button>
+  </form>
+{% endif %}
+
+<p><a href="{% url 'leaves:list' %}">Back</a></p>
+{% endblock %}
